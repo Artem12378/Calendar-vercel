@@ -84,13 +84,13 @@ function CalendarGrid({ view, startDate, schedule, lessons, onSlotClick }: GridP
         const updatedLessons = lessons.filter((l) => l.id !== id);
         useCalendarStore.getState().setLessons(updatedLessons);
     };
-
+    const gridWidth = days.length === 1 ? '100%' : 'max-content';
     return (
-        <div className="overflow-x-auto relative">
+        <div className="overflow-x-auto relative w-full">
             <div
                 ref={gridRef}
                 className="grid bg-gray-200 rounded-lg overflow-hidden gap-[1px]"
-                style={{ gridTemplateColumns: gridCols }}
+                style={{ gridTemplateColumns: gridCols, width:gridWidth }}
             >
                 <div className="bg-gray-100 p-2 text-center font-semibold">Время</div>
                 {days.map((day) => (

@@ -1,11 +1,20 @@
-import { useMemo, useEffect } from 'react';
+import {useMemo, useEffect, useState} from 'react';
 import { useCalendarStore } from '../../store/calendarStore';
 import CalendarHeader from './CalendarHeader';
 import CalendarGrid from './CalendarGrid';
 import { getDaysForView } from '../../utils/getDaysForView';
+import type {View} from "../../types/calendar.ts";
 
 function Calendar() {
     const { view, startDate, schedule, lessons, setView, addSignUp } = useCalendarStore();
+
+    const [autoMode, setAutoMode] = useState(true);
+
+    const handleViewChange = (newView: View) => {
+        setView(newView);
+        setAutoMode(false); // отключаем авто-смену после ручного выбора
+    };
+
 
     const currentRange = useMemo(() => {
         const days = getDaysForView(view, startDate);
@@ -17,6 +26,8 @@ function Calendar() {
     }, [view, startDate]);
 
     useEffect(() => {
+
+        if (!autoMode) return
         const handleResize = () => {
             const width = window.innerWidth;
             if (width < 640) setView('day');
@@ -26,7 +37,7 @@ function Calendar() {
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, [setView]);
+    }, [autoMode,setView]);
 
     const handleAddSignUp = (start: Date, end: Date, userName: string) => {
         const newSignUp = {
@@ -40,6 +51,7 @@ function Calendar() {
     };
 
     const handleSlotSelect = (slot: { start: Date; end: Date }) => {
+        setAutoMode(false);
         const userName = window.prompt('Введите ваше имя для записи:');
         if (userName && userName.trim()) {
             handleAddSignUp(slot.start, slot.end, userName.trim());
@@ -51,7 +63,7 @@ function Calendar() {
 
     return (
         <div className="p-4 max-w-full">
-            <CalendarHeader currentRange={currentRange} />
+            <CalendarHeader onViewChange={handleViewChange} currentRange={currentRange} />
             <CalendarGrid
                 view={view}
                 startDate={startDate}

@@ -1,9 +1,8 @@
-import { useCallback } from 'react';
 import { useCalendarStore } from '../../store/calendarStore';
+import type {View} from "../../types/calendar.ts";
 
-function CalendarHeader({ currentRange }: { currentRange: string }) {
-    const { view, setView, goPrev, goNext } = useCalendarStore();
-    const handleViewChange = useCallback((v: 'day' | '3days' | 'week') => setView(v), [setView]);
+function CalendarHeader({ currentRange, onViewChange}: { currentRange: string ,onViewChange: (v: View) => void }) {
+    const { view, goPrev, goNext } = useCalendarStore();
 
     const views = ['day', '3days', 'week'] as const;
     const viewLabels = { day: 'День', '3days': '3 дня', week: 'Неделя' };
@@ -34,7 +33,7 @@ function CalendarHeader({ currentRange }: { currentRange: string }) {
                                 ? 'bg-blue-500 text-white'
                                 : 'bg-gray-200 hover:bg-gray-300'
                         }`}
-                        onClick={() => handleViewChange(v)}
+                        onClick={() => onViewChange(v)}
                     >
                         {viewLabels[v]}
                     </button>
