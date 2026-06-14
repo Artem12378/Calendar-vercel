@@ -51,7 +51,6 @@ function Calendar() {
     };
 
     const handleSlotSelect = (slot: { start: Date; end: Date }) => {
-        setAutoMode(false);
         const userName = window.prompt('Введите ваше имя для записи:');
         if (userName && userName.trim()) {
             handleAddSignUp(slot.start, slot.end, userName.trim());

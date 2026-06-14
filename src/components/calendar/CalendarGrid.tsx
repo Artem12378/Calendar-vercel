@@ -1,4 +1,4 @@
-import { useMemo, useRef, useLayoutEffect, useState } from 'react';
+import {useMemo, useRef, useLayoutEffect, useState, useEffect} from 'react';
 import { getLessonForSlot } from '../../utils/getLessonForSlot';
 import type { Lesson, ScheduleInterval, TimeSlot, View } from '../../types/calendar';
 import { useCalendarStore } from '../../store/calendarStore';
@@ -22,9 +22,29 @@ function CalendarGrid({ view, startDate, schedule, lessons, onSlotClick }: GridP
         { lesson: Lesson; top: number; left: number; width: number; height: number }[]
     >([]);
 
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const days = useMemo(() => getDaysForView(view, startDate), [view, startDate]);
     const timeSlots = useMemo(() => generateTimeSlots(0, 24), []);
-    const gridCols = `80px repeat(${days.length}, minmax(100px, 1fr))`;
+
+    const isMobile = windowWidth <= 1024;
+    let gridCols;
+    let gridWidth = '100%';
+
+    if (isMobile && days.length > 1) {
+        // На мобилке при 3 или 7 днях – фиксированная ширина колонки 120px
+        gridCols = `80px repeat(${days.length}, 120px)`;
+        gridWidth = 'max-content'; // сетка не растягивается, появляется прокрутка
+    } else {
+        // На десктопе или при 1 дне – растяжение
+        gridCols = `80px repeat(${days.length}, minmax(120px, 1fr))`;
+        gridWidth = '100%';
+    }
 
     const getTimeKey = (slot: Date) => `${slot.getUTCHours()}:${slot.getUTCMinutes()}`;
 
@@ -84,13 +104,15 @@ function CalendarGrid({ view, startDate, schedule, lessons, onSlotClick }: GridP
         const updatedLessons = lessons.filter((l) => l.id !== id);
         useCalendarStore.getState().setLessons(updatedLessons);
     };
-    const gridWidth = days.length === 1 ? '100%' : 'max-content';
+
+
+
     return (
         <div className="overflow-x-auto relative w-full">
             <div
                 ref={gridRef}
                 className="grid bg-gray-200 rounded-lg overflow-hidden gap-[1px]"
-                style={{ gridTemplateColumns: gridCols, width:gridWidth }}
+                style={{ gridTemplateColumns: gridCols, width: gridWidth }}
             >
                 <div className="bg-gray-100 p-2 text-center font-semibold">Время</div>
                 {days.map((day) => (
