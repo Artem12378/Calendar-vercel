@@ -1,43 +1,4 @@
 
-React-Calendar-v1
-Repository navigation
-Code
-Issues
-Pull requests
- 0 stars
- 0 forks
- 0 watching
- 1 Branch
- 0 Tags
- Activity
-Public repository
-Artem12378/React-Calendar-v1
-Name	
-Artem12378
-Artem12378
-yesterday
-public
-3 days ago
-src
-yesterday
-.gitignore
-3 days ago
-README.md
-yesterday
-eslint.config.js
-3 days ago
-git
-2 days ago
-index.html
-3 days ago
-package-lock.json
-2 days ago
-package.json
-yesterday
-postcss.config.cjs
-yesterday
-Repository files navigation
-README
 echo "## 📅 Teacher's Schedule Calendar
 
 React-компонент для отображения расписания преподавателя с 30-минутными слотами, поддержкой рабочих интервалов, уроков разной длительности, адаптивной вёрсткой (день / 3 дня / неделя) и навигацией.
