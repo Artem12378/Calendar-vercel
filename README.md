@@ -1,73 +1,110 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React-Calendar-v1
+Repository navigation
+Code
+Issues
+Pull requests
+ 0 stars
+ 0 forks
+ 0 watching
+ 1 Branch
+ 0 Tags
+ Activity
+Public repository
+Artem12378/React-Calendar-v1
+Name	
+Artem12378
+Artem12378
+yesterday
+public
+3 days ago
+src
+yesterday
+.gitignore
+3 days ago
+README.md
+yesterday
+eslint.config.js
+3 days ago
+git
+2 days ago
+index.html
+3 days ago
+package-lock.json
+2 days ago
+package.json
+yesterday
+postcss.config.cjs
+yesterday
+Repository files navigation
+README
+echo "## 📅 Teacher's Schedule Calendar
 
-Currently, two official plugins are available:
+React-компонент для отображения расписания преподавателя с 30-минутными слотами, поддержкой рабочих интервалов, уроков разной длительности, адаптивной вёрсткой (день / 3 дня / неделя) и навигацией.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+✨ Возможности
+30-минутные слоты на весь день (00:00 – 24:00)
+Три режима просмотра: день / 3 дня / неделя (автоматически переключаются по ширине экрана)
+Навигация стрелками (<, >) – сдвиг на 1 день, 3 дня или неделю
+Цветовая индикация:
+🟢 Доступные слоты (зелёный) – клик открывает форму записи (alert с вводом имени)
+🔴 Уроки (красный блок) – содержит имя ученика и длительность, клик показывает информацию
+⚪ Недоступное время (серый) – не интерактивно
+Уроки как единые блоки – занимают 2 или 3 строки (60/90 минут)
+Удаление урока крестиком в правом верхнем углу
+Добавление урока – при клике на зелёный слот пользователь вводит имя, и урок добавляется в стор
+Адаптивная CSS Grid – горизонтальная прокрутка на маленьких экранах
+Стилизация – TailwindCSS (утилитарные классы)
+Управление состоянием – Zustand
+🛠️ Технологии
+React 18 + TypeScript
+Vite
+Zustand
+TailwindCSS 3
+CSS Grid
+📁 Структура проекта
+``` src/ ├── components/ │ └── calendar/ │ ├── Calendar.tsx # основной компонент, логика навигации и записи │ ├── CalendarHeader.tsx # шапка с кнопками и переключателем вида │ ├── CalendarGrid.tsx # сетка календаря, позиционирование уроков │ ├── TimeSlotRow.tsx # строка временного слота (рендерит ячейки дня) │ └── LessonBlock.tsx # абсолютный блок урока (красный с крестиком) ├── store/ │ ├── calendarStore.ts # Zustand стор (view, startDate, schedule, lessons, actions) │ └── mockData.ts # начальные мок-данные (рабочие интервалы и уроки) ├── types/ │ └── calendar.ts # общие типы (View, Lesson, ScheduleInterval, TimeSlot) ├── utils/ │ ├── formatTime.ts # форматирование времени "HH:MM HH:MM" │ ├── generateTimeSlots.ts # генерация 30-минутных слотов (UTC) │ ├── getDaysForView.ts # получение массива дней для выбранного вида │ ├── getLessonForSlot.ts # проверка, есть ли урок на слоте │ └── isWorkingHour.ts # проверка, входит ли слот в рабочие интервалы ├── App.tsx ├── main.tsx └── index.css # Tailwind директивы ```
 
-## React Compiler
+🔧 Установка и запуск
+Клонировать репозиторий ```bash git clone cd CalendarReact/app ```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Установить зависимости ```bash npm install ```
 
-## Expanding the ESLint configuration
+Установить TailwindCSS (если ещё не установлен) ```bash npm install -D tailwindcss@3 postcss autoprefixer npx tailwindcss init -p ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Убедитесь, что `tailwind.config.js` содержит: ```js export default { content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"], theme: { extend: {} }, plugins: [], } ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Добавить в `src/index.css`: ```css @tailwind base; @tailwind components; @tailwind utilities; ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Запустить dev-сервер ```bash npm run dev ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+📦 Сборка для production
+```bash npm run build ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+🧪 Использование
+Просто импортируйте `Calendar` в ваше приложение:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```tsx import Calendar from './components/calendar/Calendar';
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+function App() { return ; } ```
+
+По умолчанию используются мок-данные (август-сентябрь 2025). Вы можете заменить их, передав свои через Zustand стор (`useCalendarStore.getState().setSchedule(...)`).
+
+🧠 Как это работает
+Состояние хранится в Zustand: текущий вид, дата начала, рабочие интервалы, список уроков.
+Сетка строится из `days` (массив дат) и `timeSlots` (48 слотов). CSS Grid с динамическим количеством колонок.
+Цвет ячейки определяется:
+Если есть урок – красный (фон под абсолютным блоком)
+Иначе если рабочий час – зелёный
+Иначе серый
+Уроки отображаются как абсолютные блоки поверх сетки. Их позиции вычисляются после рендера (useLayoutEffect) на основе первой ячейки урока (по data-day и data-slot). Высота блока = количество слотов × высота ячейки.
+Добавление урока – при клике на зелёную ячейку вызывается window.prompt, создаётся новый объект урока и добавляется в стор.
+Удаление урока – по клику на крестик вызывается setLessons с отфильтрованным массивом.
+Адаптивность – useEffect слушает resize окна и меняет view при изменении ширины.
+📝 Примечания
+Все временные метки и интервалы хранятся и сравниваются в UTC, чтобы избежать проблем с часовыми поясами. При отображении используется локальное время.
+
+Длительность урока для расчёта rowSpan берётся из разницы endTime и startTime (а не из поля duration), чтобы гарантировать точность.
+
+👨‍💻 Автор
+Artem Susidko" > README.md
