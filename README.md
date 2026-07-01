@@ -67,5 +67,3 @@ function App() { return ; } ```
 
 Длительность урока для расчёта rowSpan берётся из разницы endTime и startTime (а не из поля duration), чтобы гарантировать точность.
 
-👨‍💻 Автор
-Artem Susidko" > README.md
